@@ -2,7 +2,7 @@
 - name: Install lighthouse
   hosts: lighthouse
   handlers:
-    - name: restart nginx
+    - name: Restart nginx
       become: true
       ansible.builtin.service:
         name: nginx
@@ -14,12 +14,13 @@
         pkg:
           - nginx
           - git
-        update_cache: yes
+        update_cache: true
 
     - name: Download Lighthouse from Github
       ansible.builtin.git:
         repo: https://github.com/VKCOM/lighthouse.git
         dest: /var/www/html/lighthouse
+        version: master
 
     - name: Deploy Nginx config
       become: true
@@ -27,7 +28,7 @@
         src: nginx.j2
         dest: /etc/nginx/sites-available/lighthouse
         mode: '0644'
-      notify: restart nginx
+      notify: Restart nginx
 
     - name: Enable lighthouse site
       become: true
@@ -35,4 +36,4 @@
         src: /etc/nginx/sites-available/lighthouse
         dest: /etc/nginx/sites-enabled/lighthouse
         state: link
-      notify: restart nginx
+      notify: Restart nginx
