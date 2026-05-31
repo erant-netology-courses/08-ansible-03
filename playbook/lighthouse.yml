@@ -15,6 +15,8 @@
           - nginx
           - git
         update_cache: true
+      tags:
+        - install
 
     - name: Download Lighthouse from Github
       become: true
@@ -22,6 +24,8 @@
         repo: https://github.com/VKCOM/lighthouse.git
         dest: /var/www/html/lighthouse
         version: master
+      tags:
+        - nginx
 
     - name: Deploy Nginx config
       become: true
@@ -30,6 +34,8 @@
         dest: /etc/nginx/sites-available/lighthouse
         mode: '0644'
       notify: Restart nginx
+      tags:
+        - nginx
 
     - name: Enable lighthouse site
       become: true
@@ -38,6 +44,8 @@
         dest: /etc/nginx/sites-enabled/lighthouse
         state: link
       notify: Restart nginx
+      tags:
+        - nginx
 
     - name: Remove default nginx site
       become: true
@@ -45,3 +53,5 @@
         path: /etc/nginx/sites-enabled/default
         state: absent
       notify: Restart nginx
+      tags:
+        - nginx
