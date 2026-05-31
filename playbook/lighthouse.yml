@@ -17,7 +17,7 @@
         update_cache: yes
 
     - name: Download Lighthouse from Github
-      ansible.builtin.git
+      ansible.builtin.git:
         repo: https://github.com/VKCOM/lighthouse.git
         dest: /var/www/html/lighthouse
 

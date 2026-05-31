@@ -2,7 +2,7 @@
 - name: Install Vector
   hosts: vector
   handlers:
-    - name: restart vector
+    - name: Restart vector
       become: true
       ansible.builtin.service:
         name: vector
@@ -19,13 +19,14 @@
       ansible.builtin.file:
         path: "{{ vector_install_dir }}"
         state: directory
+        mode: '0755'
 
     - name: Unpack Vector
       become: true
       ansible.builtin.unarchive:
         src: "/tmp/vector-{{ vector_version }}.tar.gz"
         dest: "{{ vector_install_dir }}"
-        remote_src: yes
+        remote_src: true
         extra_opts: ["--strip-components=1"]
 
     - name: Create config directory
@@ -41,13 +42,13 @@
         src: vector.toml.j2
         dest: /etc/vector/vector.toml
         mode: '0644'
-      notify: restart vector
+      notify: Restart vector
 
     - name: Find vector binary
       ansible.builtin.find:
         paths: /opt/vector
         patterns: "vector"
-        recurse: yes
+        recurse: true
         file_type: file
       register: vector_binary
 
@@ -71,5 +72,5 @@
       ansible.builtin.systemd:
         name: vector
         state: started
-        enabled: yes
-        daemon_reload: yes
+        enabled: true
+        daemon_reload: true
