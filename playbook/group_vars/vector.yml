@@ -1,0 +1,4 @@
+---
+vector_version: "0.55.0"
+vector_url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-x86_64-unknown-linux-gnu.tar.gz"
+vector_install_dir: "/opt/vector"

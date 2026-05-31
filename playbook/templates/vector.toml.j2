@@ -1,0 +1,16 @@
+[sources.dummy_logs]
+type = "demo_logs"
+format = "syslog"
+interval = {{ vector_interval | default(1) }}
+
+[transforms.parse_logs]
+type = "remap"
+inputs = ["dummy_logs"]
+source = '''
+. = parse_syslog!(.message)
+'''
+
+[sinks.print_logs]
+type = "console"
+inputs = ["parse_logs"]
+encoding.codec = "json"
